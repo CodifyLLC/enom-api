@@ -5,7 +5,8 @@ class Purchase {
     public $sld;
     public $tld;
     public $UseDNS;
-    public $NSX;
+    public $NS1;
+    public $NS2;
     public $RenewName;
     public $EmailNotify;
     public $QueueOrder;
@@ -85,17 +86,33 @@ class Purchase {
     /**
      * @return mixed
      */
-    public function getNSX()
+    public function getNS1()
     {
-        return $this->NSX;
+        return $this->NS1;
     }
 
     /**
      * @param mixed $NSX
      */
-    public function setNSX($NSX)
+    public function setNS1($NSX)
     {
-        $this->NSX = $NSX;
+        $this->NS1 = $NSX;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNS2()
+    {
+        return $this->NS2;
+    }
+
+    /**
+     * @param mixed $NSX
+     */
+    public function setNS2($NSX)
+    {
+        $this->NS2 = $NSX;
     }
 
     /**
@@ -443,7 +460,7 @@ class Purchase {
             'FirstName',
             'LastName',
             'OrganizationName',
-            'TypeJobTitle',
+            'JobTitle',
             'Address1',
             'Address2',
             'City',

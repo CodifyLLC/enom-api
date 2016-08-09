@@ -112,13 +112,12 @@ class EnomHelpers extends Enom {
         $domainParts = explode('.', $domain);
 
         if (count($domainParts) > 0) {
-            $extension = end($domainParts);
 
-            $lastKey = count($domainParts)-1;
-            $domainNameKey = $lastKey-1;
-            $domain  = $domainParts[$domainNameKey];
+            $domainName = $domainParts[0];
 
-            return array('SLD'=>$domain, 'TLD'=>$extension);
+            $extension = str_replace($domainName . '.', '', $domain);
+
+            return array('SLD'=>$domainName, 'TLD'=>$extension);
         }
 
 

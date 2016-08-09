@@ -178,6 +178,7 @@ class Enom {
 
             $debugFile = dirname(__FILE__) . "/../enomLog.txt";
             file_put_contents($debugFile, "Verbose information:\n" . $verboseLog . "\n", FILE_APPEND);
+            file_put_contents($debugFile, "Output:\n" . $output . "\n", FILE_APPEND);
         }
         $response = simplexml_load_string($output);
 

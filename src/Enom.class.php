@@ -13,6 +13,7 @@ class Enom {
     private $baseUrl;
     private $debug;
     private $ResponseType;
+    private $httpRequestMethod;
 
     public function __construct($UID, $PW, $baseUrl='http://resellertest.enom.com/interface.asp') {
         $this->UID = $UID;
@@ -21,7 +22,25 @@ class Enom {
         $this->baseUrl = $baseUrl;
         $this->debug = false;
         $this->ResponseType = 'xml';
+        $this->httpRequestMethod = 'GET';
     }
+
+    /**
+     * @return string
+     */
+    public function getHttpRequestMethod()
+    {
+        return $this->httpRequestMethod;
+    }
+
+    /**
+     * @param string $httpRequestMethod
+     */
+    public function setHttpRequestMethod($httpRequestMethod)
+    {
+        $this->httpRequestMethod = $httpRequestMethod;
+    }
+
 
     /**
      * @return string
@@ -145,17 +164,30 @@ class Enom {
         }
         $queryString = substr($queryString, 0, -1);
 
-        $url = $this->baseUrl . '?' . $queryString;
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+
+        switch ($this->httpRequestMethod) {
+            case 'POST':
+                $url = $this->baseUrl;
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $queryString);
+                break;
+
+            default:
+                $url = $this->baseUrl . '?' . $queryString;
+                break;
+        }
+
 
         if ($this->debug === true) {
             print "URL: " . $url;
             print "\n\n";
         }
 
-        $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+
 
         if ($this->debug) {
             // CURLOPT_VERBOSE: TRUE to output verbose information. Writes output to STDERR,
@@ -178,6 +210,7 @@ class Enom {
 
             $debugFile = dirname(__FILE__) . "/../enomLog.txt";
             file_put_contents($debugFile, "Verbose information:\n" . $verboseLog . "\n", FILE_APPEND);
+            file_put_contents($debugFile, "Request Data: " . $queryString, FILE_APPEND);
             file_put_contents($debugFile, "Output:\n" . $output . "\n", FILE_APPEND);
         }
         $response = simplexml_load_string($output);
